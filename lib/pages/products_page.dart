@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:new_app/pages/add_product.dart';
 
 import '../services/product_service.dart';
+import 'product_details.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -25,8 +26,12 @@ class _ProductsPageState extends State<ProductsPage> {
       onRefresh: getAllProducts,
       child: GridView.builder(
         padding: const EdgeInsets.all(20),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 220, crossAxisSpacing: 20, mainAxisSpacing: 20),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.7,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+        ),
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
@@ -41,15 +46,25 @@ class _ProductsPageState extends State<ProductsPage> {
             child: Column(
               children: [
                 Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: NetworkImage(imageUrl),
-                        fit: BoxFit.contain,
+                  child: InkWell(
+                    onTap: () => navigateToProductPage(product),
+                    child: Hero(
+                      tag: "${product['id']}",
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(imageUrl),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
-
+                  ),
+                ),
+                Text(
+                  "\$${product['price']}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(
@@ -63,9 +78,11 @@ class _ProductsPageState extends State<ProductsPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ConstrainedBox(
-                      constraints:
-                          const BoxConstraints.tightFor(width: 80, height: 25),
+                      constraints: const BoxConstraints.tightFor(width: 80, height: 25),
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                        ),
                         child: const Text('Edit'),
                         onPressed: () {
                           navigateToEditProduct(product);
@@ -95,6 +112,13 @@ class _ProductsPageState extends State<ProductsPage> {
     );
   }
 
+  void navigateToProductPage(product) {
+    final route = MaterialPageRoute(
+      builder: (context) => ProductDetails(product: product),
+    );
+    Navigator.push(context, route);
+  }
+
   void navigateToEditProduct(product) {
     final route = MaterialPageRoute(
       builder: (context) => AddProduct(product: product),
@@ -105,8 +129,7 @@ class _ProductsPageState extends State<ProductsPage> {
   Future<void> deleteProduct(int productId) async {
     final success = await ProductService.deleteProduct(productId);
     if (success) {
-      final filteredProducts =
-          products.where((element) => element['id'] != productId).toList();
+      final filteredProducts = products.where((element) => element['id'] != productId).toList();
       setState(() {
         products = filteredProducts;
       });
@@ -123,8 +146,7 @@ class _ProductsPageState extends State<ProductsPage> {
         products = response;
       });
     } else {
-      print('Failed to get product. Status code: ${response}');
-      print('Response: ${response}');
+      print('Response: $response');
     }
   }
 }

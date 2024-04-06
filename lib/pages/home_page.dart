@@ -12,19 +12,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(title: const Text('WooCommerce App')),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: navigateToAddProduct,
-          label: const Text(
-            "Add product",
-          ),
-          backgroundColor: Colors.black,
-        ),
-        body: ProductsPage(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('MY SHOP'),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: navigateToAddProduct,
+        label: const Text(
+          "Add product",
+        ),
+        backgroundColor: Colors.black,
+      ),
+      body: ProductsPage(),
     );
   }
 
