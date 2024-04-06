@@ -37,7 +37,6 @@ class _AddProductState extends State<AddProduct> {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          const SizedBox(height: 30),
           TextField(
             controller: nameController,
             decoration: const InputDecoration(hintText: 'Name'),
@@ -96,8 +95,7 @@ class _AddProductState extends State<AddProduct> {
   }
 
   Future<void> updateProduct() async {
-    final product = widget.product as Map;
-    final productId = product["id"];
+    final productId = widget.product?["id"];
 
     // Get the data from form
     final name = nameController.text;
@@ -117,9 +115,6 @@ class _AddProductState extends State<AddProduct> {
 
       // Handle the response (success or error)
       if (success) {
-        nameController.text = '';
-        priceController.text = '';
-        descriptionController.text = '';
         showSuccessMessage('Product updated successfully.');
       } else {
         showErrorMessage('Failed to update product.');
