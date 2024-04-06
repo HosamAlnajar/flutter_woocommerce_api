@@ -6,7 +6,7 @@
 - [BraaSite website](https://braasite.com)
 - [BraaSite on tiktok](https://www.tiktok.com/@braasite)
 - [BraaSite on Facebook](https://www.facebook.com/BraaSite)
-- [My account on Instagram](https://www.instagram.com/braasite.com_ar)
+- [BraaSite on Instagram](https://www.instagram.com/braasite.com_ar)
 
 ##   صفحات التطبيق
 ![Contact us with mailto](./app_images/1.png)
